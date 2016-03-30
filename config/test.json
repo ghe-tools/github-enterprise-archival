@@ -1,0 +1,22 @@
+{
+  "date-format": "YYYY-MM-DD-ddd",
+  "dir": {
+    "snapshot": "/snapshots/current",
+    "archives": "/archives"
+  },
+  "retention": {
+    "days": 7,
+    "weeks": 4,
+    "months": 12,
+    "years": 1000
+  },
+  "email": {
+    "sender": "github@your-company-name.com",
+    "recipients": ["github-ops@your-company-name.com"]
+  },
+  "log": {
+    "dir": "logs",
+    "level": "trace",
+    "retention": 10
+  }
+}

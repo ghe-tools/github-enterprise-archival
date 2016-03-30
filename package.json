@@ -1,0 +1,49 @@
+{
+  "name": "github-enterprise-archival",
+  "version": "1.0.0",
+  "description": "Manage nightly backups for long term archivals",
+  "author": "Quoc Vu",
+  "license": "Apache-2.0",
+  "scripts": {
+    "archive": "node src/archive.js",
+    "cover": "NODE_ENV=test istanbul cover _mocha",
+    "gen": "node src/gen-archives.js",
+    "logs": "bunyan logs/github-archival.log",
+    "prune": "node src/prune.js",
+    "test": "NODE_ENV=test mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:intuit/github-enterprise-archival.git"
+  },
+  "homepage": "https://github.com/intuit/github-enterprise-archival",
+  "bugs": {
+    "url": "https://github.com/intuit/github-enterprise-archival/issues",
+    "email": "darthvu@gmail.com"
+  },
+  "keywords": [
+    "github",
+    "enterprise",
+    "archive",
+    "backup",
+    "nightly"
+  ],
+  "dependencies": {
+    "async": "^1.4.2",
+    "bunyan": "^1.5.1",
+    "commander": "^2.8.1",
+    "config": "^1.16.0",
+    "moment": "^2.10.6",
+    "nodemailer": "^2.1.0",
+    "tar-fs": "^1.10.0"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.2",
+    "should": "^7.1.0",
+    "sinon": "^1.16.1"
+  },
+  "engines": {
+    "node": "4.2"
+  }
+}
