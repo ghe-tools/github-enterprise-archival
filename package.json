@@ -7,6 +7,7 @@
   "scripts": {
     "archive": "node src/archive.js",
     "cover": "NODE_ENV=test istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "gen": "node src/gen-archives.js",
     "logs": "bunyan logs/github-archival.log",
     "prune": "node src/prune.js",
