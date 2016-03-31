@@ -1,5 +1,6 @@
-github-enterprise-archival
-==========================
+[![Build Status](https://travis-ci.org/intuit/github-enterprise-archival.svg?branch=master)](http://img.shields.io/travis/intuit/github-enterprise-archival.svg)
+
+# github-enterprise-archival
 
 This tool archives daily snapshots of GitHub Enterprise (GHE) and retains copies
 according to the aging policy. Each copy is a self-contained archive with all
