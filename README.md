@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/intuit/github-enterprise-archival.svg?branch=master)](http://img.shields.io/travis/intuit/github-enterprise-archival.svg)
-[![Coverage Status](https://coveralls.io/repos/github/intuit/github-enterprise-archival/badge.svg?branch=master)](https://coveralls.io/github/intuit/github-enterprise-archival?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/intuit/github-enterprise-archival/badge.svg?branch=master)](https://img.shields.io/coveralls/intuit/github-enterprise-archival.svg)
 
 # github-enterprise-archival
 
