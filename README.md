@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/intuit/github-enterprise-archival.svg?branch=master)](http://img.shields.io/travis/intuit/github-enterprise-archival.svg)
-[![Coverage Status](https://coveralls.io/repos/github/intuit/github-enterprise-archival/badge.svg?branch=master)](https://img.shields.io/coveralls/intuit/github-enterprise-archival.svg)
+[![Build Status](https://travis-ci.org/ghe-tools/github-enterprise-archival.svg?branch=master)](http://img.shields.io/travis/ghe-tools/github-enterprise-archival.svg)
+[![Coverage Status](https://coveralls.io/repos/github/ghe-tools/github-enterprise-archival/badge.svg?branch=master)](https://img.shields.io/coveralls/ghe-tools/github-enterprise-archival.svg)
 
 # github-enterprise-archival
 
@@ -38,11 +38,11 @@ Refer to the documentation at the link above to configure and run `ghe-backup`
 
 Then, we create a new archive from the snapshot taken by `ghe-backup`. An archive is tarball of a snapshot.
 
-    $ node src/archive --directory /var/data/ghe/snapshots/current
+    $ node src/archive --directory=/var/data/ghe/snapshots/current
 
 Or
 
-    $ npm run archive --directory /var/data/ghe/snapshots/current
+    $ npm run archive --directory=/var/data/ghe/snapshots/current
 
 A new tarball is created in the archives folder (see config file).  Archives accumulate in that folder until pruned.
 
