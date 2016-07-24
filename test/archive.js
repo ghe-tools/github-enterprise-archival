@@ -184,13 +184,11 @@ describe('archive', function() {
       };
 
       var callback = function(err, res) {
-/*
         should.not.exist(res);
         err.should.be.equal(error);
         alert.calledOnce.should.be.true();
         alert.calledWith(['github-ops@your-company-name.com'],
-          'github@your-company-name.com', 'test', tarball).should.be.true();
-*/
+          'github@your-company-name.com', 'test', tarfile).should.be.true();
         done();
       };
 
