@@ -1,33 +1,29 @@
 'use strict';
 
-var fs = require('fs');
-
 var moment = require('moment');
+var rewire = require('rewire');
 var should = require('should');
 var sinon = require('sinon');
 
-var helper = require('../src/helper');
+var prune = rewire('../src/prune');
 
 describe('prune', function() {
   var today = moment('2015-09-16');
-  var prune;
   var sandbox;
-  var log = {
-    trace: sinon.spy(),
-    debug: sinon.spy(),
-    info: sinon.spy(),
-    warn: sinon.spy(),
-    error: sinon.spy(),
-    fatal: sinon.spy()
-  };
 
   before(function() {
-    sinon.stub(helper, 'logger').returns(log);
-    prune = require('../src/prune');
+    var log = {
+      trace: sinon.spy(),
+      debug: sinon.spy(),
+      info: sinon.spy(),
+      warn: sinon.spy(),
+      error: sinon.spy(),
+      fatal: sinon.spy()
+    };
+    prune.__set__('log', log);
   });
 
   after(function() {
-    helper.logger.restore();
   });
 
   beforeEach(function () {
@@ -40,165 +36,200 @@ describe('prune', function() {
 
   describe('isDaily()', function() {
     it('should be within the last 3 days', function() {
-      prune.isDaily(moment('2015-09-16'), 3, today).should.be.true();
-      prune.isDaily(moment('2015-09-15'), 3, today).should.be.true();
-      prune.isDaily(moment('2015-09-14'), 3, today).should.be.true();
-      prune.isDaily(moment('2015-09-13'), 3, today).should.be.false();
-      prune.isDaily(moment('2015-09-12'), 3, today).should.be.false();
+      var isDaily = prune.__get__('isDaily');
+
+      isDaily(moment('2015-09-16'), 3, today).should.be.true();
+      isDaily(moment('2015-09-15'), 3, today).should.be.true();
+      isDaily(moment('2015-09-14'), 3, today).should.be.true();
+      isDaily(moment('2015-09-13'), 3, today).should.be.false();
+      isDaily(moment('2015-09-12'), 3, today).should.be.false();
     });
   });
 
   describe('isSunday()', function() {
+    var isSunday = prune.__get__('isSunday');
+
     it('should be a Sunday', function() {
-      prune.isSunday(moment('2015-08-14'), 3, today).should.be.false();
-      prune.isSunday(moment('2015-09-12'), 3, today).should.be.false();
+      isSunday(moment('2015-08-14'), 3, today).should.be.false();
+      isSunday(moment('2015-09-12'), 3, today).should.be.false();
     });
 
     it('should be within 3 weeks', function() {
-      prune.isSunday(moment('2015-09-13'), 3, today).should.be.true();
-      prune.isSunday(moment('2015-09-06'), 3, today).should.be.true();
-      prune.isSunday(moment('2015-08-30'), 3, today).should.be.true();
-      prune.isSunday(moment('2015-08-23'), 3, today).should.be.false();
-      prune.isSunday(moment('2015-08-20'), 3, today).should.be.false();
+      isSunday(moment('2015-09-13'), 3, today).should.be.true();
+      isSunday(moment('2015-09-06'), 3, today).should.be.true();
+      isSunday(moment('2015-08-30'), 3, today).should.be.true();
+      isSunday(moment('2015-08-23'), 3, today).should.be.false();
+      isSunday(moment('2015-08-20'), 3, today).should.be.false();
     });
   });
 
   describe('isFirstOfMonth()', function() {
+    var isFirstOfMonth = prune.__get__('isFirstOfMonth');
+
     it('should be a first of the month', function() {
-      prune.isFirstOfMonth(moment('2015-09-02'), 3, today).should.be.false();
-      prune.isFirstOfMonth(moment('2015-09-01'), 3, today).should.be.true();
-      prune.isFirstOfMonth(moment('2015-08-31'), 3, today).should.be.false();
+      isFirstOfMonth(moment('2015-09-02'), 3, today).should.be.false();
+      isFirstOfMonth(moment('2015-09-01'), 3, today).should.be.true();
+      isFirstOfMonth(moment('2015-08-31'), 3, today).should.be.false();
     });
 
     it('should be within 3 months', function() {
-      prune.isFirstOfMonth(moment('2015-09-01'), 3, today).should.be.true();
-      prune.isFirstOfMonth(moment('2015-08-01'), 3, today).should.be.true();
-      prune.isFirstOfMonth(moment('2015-07-01'), 3, today).should.be.true();
-      prune.isFirstOfMonth(moment('2015-06-01'), 3, today).should.be.false();
-      prune.isFirstOfMonth(moment('2015-05-01'), 3, today).should.be.false();
+      isFirstOfMonth(moment('2015-09-01'), 3, today).should.be.true();
+      isFirstOfMonth(moment('2015-08-01'), 3, today).should.be.true();
+      isFirstOfMonth(moment('2015-07-01'), 3, today).should.be.true();
+      isFirstOfMonth(moment('2015-06-01'), 3, today).should.be.false();
+      isFirstOfMonth(moment('2015-05-01'), 3, today).should.be.false();
     });
   });
 
   describe('isFirstOfYear()', function() {
+    var isFirstOfYear = prune.__get__('isFirstOfYear');
+
     it('should be a first of the month', function() {
-      prune.isFirstOfYear(moment('2015-02-01'), 3, today).should.be.false();
-      prune.isFirstOfYear(moment('2015-01-02'), 3, today).should.be.false();
-      prune.isFirstOfYear(moment('2015-01-01'), 3, today).should.be.true();
-      prune.isFirstOfYear(moment('2015-12-31'), 3, today).should.be.false();
+      isFirstOfYear(moment('2015-02-01'), 3, today).should.be.false();
+      isFirstOfYear(moment('2015-01-02'), 3, today).should.be.false();
+      isFirstOfYear(moment('2015-01-01'), 3, today).should.be.true();
+      isFirstOfYear(moment('2015-12-31'), 3, today).should.be.false();
     });
 
     it('should be within 3 months', function() {
-      prune.isFirstOfYear(moment('2015-01-01'), 3, today).should.be.true();
-      prune.isFirstOfYear(moment('2014-01-01'), 3, today).should.be.true();
-      prune.isFirstOfYear(moment('2013-01-01'), 3, today).should.be.true();
-      prune.isFirstOfYear(moment('2012-01-01'), 3, today).should.be.false();
-      prune.isFirstOfYear(moment('2011-01-01'), 3, today).should.be.false();
+      isFirstOfYear(moment('2015-01-01'), 3, today).should.be.true();
+      isFirstOfYear(moment('2014-01-01'), 3, today).should.be.true();
+      isFirstOfYear(moment('2013-01-01'), 3, today).should.be.true();
+      isFirstOfYear(moment('2012-01-01'), 3, today).should.be.false();
+      isFirstOfYear(moment('2011-01-01'), 3, today).should.be.false();
     });
   });
 
   describe('prune()', function() {
-
+    var error = 'Oops! An Error!';
 
     it('should keep archive', function(done) {
+      var extractDate = sandbox.stub().returns(today);
+      var isDaily = sandbox.stub().returns(true);
       var callback = function(err, res) {
-        helper.extractDate.calledOnce.should.be.true();
-        prune.isDaily.calledOnce.should.be.true();
+        extractDate.calledOnce.should.be.true();
+        isDaily.calledOnce.should.be.true();
         should.not.exist(err);
         res.should.be.equal('keep');
         done();
       };
 
-      sandbox.stub(helper, 'extractDate').returns(today);
-      sandbox.stub(prune, 'isDaily').returns(true);
+      prune.__set__('isDaily', isDaily);
+      prune.__set__('helper', {
+        extractDate: extractDate
+      });
 
-      prune.prune(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
+      var p = prune.__get__('prune');
+      p(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
     });
 
     it('should remove archive', function(done) {
+      var extractDate = sandbox.stub().returns(today);
+      var isDaily = sandbox.stub().returns(false);
+      var isSunday = sandbox.stub().returns(false);
+      var isFirstOfMonth = sandbox.stub().returns(false);
+      var isFirstOfYear = sandbox.stub().returns(false);
+      var unlink = sandbox.stub().yields();
+
       var callback = function(err, res) {
-        helper.extractDate.calledOnce.should.be.true();
-        prune.isDaily.calledOnce.should.be.true();
-        prune.isSunday.calledOnce.should.be.true();
-        prune.isFirstOfMonth.calledOnce.should.be.true();
-        prune.isFirstOfYear.calledOnce.should.be.true();
-        fs.unlink.calledOnce.should.be.true();
+        extractDate.calledOnce.should.be.true();
+        isDaily.calledOnce.should.be.true();
+        isSunday.calledOnce.should.be.true();
+        isFirstOfMonth.calledOnce.should.be.true();
+        isFirstOfYear.calledOnce.should.be.true();
+        unlink.calledOnce.should.be.true();
         should.not.exist(err);
         res.should.be.equal('removed');
         done();
       };
 
-      sandbox.stub(helper, 'extractDate').returns(today);
-      sandbox.stub(prune, 'isDaily').returns(false);
-      sandbox.stub(prune, 'isSunday').returns(false);
-      sandbox.stub(prune, 'isFirstOfMonth').returns(false);
-      sandbox.stub(prune, 'isFirstOfYear').returns(false);
-      sandbox.stub(fs, 'unlink').yields();
+      prune.__set__('helper', { extractDate: extractDate });
+      prune.__set__('isDaily', isDaily);
+      prune.__set__('isSunday', isSunday);
+      prune.__set__('isFirstOfMonth', isFirstOfMonth);
+      prune.__set__('isFirstOfYear', isFirstOfYear);
+      prune.__set__('fs', { unlink: unlink });
 
-      prune.prune(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
+      var p = prune.__get__('prune');
+      p(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
     });
 
     it('should fail removing archive', function(done) {
+      var extractDate = sandbox.stub().returns(today);
+      var isDaily = sandbox.stub().returns(false);
+      var isSunday = sandbox.stub().returns(false);
+      var isFirstOfMonth = sandbox.stub().returns(false);
+      var isFirstOfYear = sandbox.stub().returns(false);
+      var unlink = sandbox.stub().yields(error);
+
       var callback = function(err, res) {
-        helper.extractDate.calledOnce.should.be.true();
-        prune.isDaily.calledOnce.should.be.true();
-        prune.isSunday.calledOnce.should.be.true();
-        prune.isFirstOfMonth.calledOnce.should.be.true();
-        prune.isFirstOfYear.calledOnce.should.be.true();
-        fs.unlink.calledOnce.should.be.true();
+        extractDate.calledOnce.should.be.true();
+        isDaily.calledOnce.should.be.true();
+        isSunday.calledOnce.should.be.true();
+        isFirstOfMonth.calledOnce.should.be.true();
+        isFirstOfYear.calledOnce.should.be.true();
+        unlink.calledOnce.should.be.true();
         should.not.exist(err);
         res.should.be.equal('failed');
         done();
       };
 
-      sandbox.stub(helper, 'extractDate').returns(today);
-      sandbox.stub(prune, 'isDaily').returns(false);
-      sandbox.stub(prune, 'isSunday').returns(false);
-      sandbox.stub(prune, 'isFirstOfMonth').returns(false);
-      sandbox.stub(prune, 'isFirstOfYear').returns(false);
-      sandbox.stub(fs, 'unlink').yields('Opps! An Error');
+      prune.__set__('helper', { extractDate: extractDate });
+      prune.__set__('isDaily', isDaily);
+      prune.__set__('isSunday', isSunday);
+      prune.__set__('isFirstOfMonth', isFirstOfMonth);
+      prune.__set__('isFirstOfYear', isFirstOfYear);
+      prune.__set__('fs', { unlink: unlink });
 
-      prune.prune(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
+      var p = prune.__get__('prune');
+      p(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
     });
 
     it('should not recognize archive', function(done) {
+      var extractDate = sandbox.stub().throws(new Error('Oops! An error'));
+
       var callback = function(err, res) {
-        helper.extractDate.calledOnce.should.be.true();
+        extractDate.calledOnce.should.be.true();
         should.not.exist(err);
         res.should.be.equal('skipped');
         done();
       };
 
-      sandbox.stub(helper, 'extractDate').throws(new Error('Oops! An error'));
+      prune.__set__('helper', { extractDate: extractDate });
 
-      prune.prune(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
+      var p = prune.__get__('prune');
+      p(today, 1, 1, 1, 1, 'a-folder', 'a-file', callback);
     });
   });
 
   describe('scanArchives()', function() {
     it('should process all files', function() {
       var files = ['file-1', 'file-2', 'file-3', 'file-4'];
+      var readdir = sandbox.stub().yields(null, files);
+      var p = sandbox.spy();
 
-      sandbox.stub(fs, 'readdir').yields(null, files);
-      sandbox.stub(prune, 'prune')
-        .onCall(1).yields(null, 'failed')
-        .onCall(2).yields(null, 'keep')
-        .onCall(1).yields(null, 'skipped')
-        .onCall(1).yields(null, 'removed');
+      prune.__set__('fs', { readdir: readdir });
+      prune.__set__('prune', p);
 
-      prune.scanArchives('a-folder', today, { days: 1, weeks: 1, months: 1, years: 1 });
+      var scanArchives = prune.__get__('scanArchives');
+      scanArchives('a-folder', today, { days: 1, weeks: 1, months: 1, years: 1 });
 
-      fs.readdir.calledOnce.should.be.true();
-      prune.prune.callCount.should.be.equal(4);
+      readdir.calledOnce.should.be.true();
+      p.callCount.should.be.equal(4);
     });
 
     it('should fail reading archive folder', function() {
-      sandbox.stub(fs, 'readdir').yields('Oops! An Error');
-      sandbox.spy(prune, 'prune');
+      var readdir = sandbox.stub().yields('Oops! An Error');
+      var p = sandbox.spy(p);
 
-      prune.scanArchives('a-folder', today, { days: 1, weeks: 1, months: 1, years: 1 });
+      prune.__set__('fs', { readdir: readdir });
+      prune.__set__('prune', p);
 
-      fs.readdir.calledOnce.should.be.true();
-      prune.prune.callCount.should.be.equal(0);
+      var scanArchives = prune.__get__('scanArchives');
+      scanArchives('a-folder', today, { days: 1, weeks: 1, months: 1, years: 1 });
+
+      readdir.calledOnce.should.be.true();
+      p.callCount.should.be.equal(0);
     });
   });
 });

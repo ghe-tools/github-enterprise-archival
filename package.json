@@ -9,6 +9,7 @@
     "cover": "NODE_ENV=test istanbul cover _mocha",
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "gen": "node src/gen-archives.js",
+    "lint": "jshint src/* test/*",
     "logs": "bunyan logs/github-archival.log",
     "prune": "node src/prune.js",
     "test": "NODE_ENV=test mocha"
@@ -36,6 +37,7 @@
     "config": "^1.16.0",
     "moment": "^2.10.6",
     "nodemailer": "^2.1.0",
+    "rewire": "^2.5.2",
     "tar-fs": "^1.10.0"
   },
   "devDependencies": {
