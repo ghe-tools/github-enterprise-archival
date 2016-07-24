@@ -15,7 +15,7 @@
     "recipients": ["github-ops@your-company-name.com"]
   },
   "log": {
-    "dir": "logs",
+    "dir": ".",
     "level": "trace",
     "retention": 10
   }
