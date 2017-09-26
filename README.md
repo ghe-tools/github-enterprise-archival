@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/ghe-tools/github-enterprise-archival.svg?branch=master)](http://img.shields.io/travis/ghe-tools/github-enterprise-archival.svg)
-[![Coverage Status](https://coveralls.io/repos/github/ghe-tools/github-enterprise-archival/badge.svg?branch=master)](https://img.shields.io/coveralls/ghe-tools/github-enterprise-archival.svg)
+[![Build Status](http://img.shields.io/travis/ghe-tools/github-enterprise-archival.svg)](https://travis-ci.org/ghe-tools/github-enterprise-archival)
+[![Coverage Status](https://img.shields.io/coveralls/ghe-tools/github-enterprise-archival.svg)](https://coveralls.io/github/ghe-tools/github-enterprise-archival)
 
 # github-enterprise-archival
 
