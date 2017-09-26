@@ -1,8 +1,8 @@
 'use strict';
 
 var os = require('os');
-
 var PassThrough = require('stream').PassThrough;
+
 var rewire = require('rewire');
 var sinon = require('sinon');
 var should = require('should');
